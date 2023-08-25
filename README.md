@@ -1,54 +1,25 @@
--- Game State
+# Tetris
+This repository is based off of the code base found here: https://github.com/mgeorgoulopoulos/TetrisHaskellWeekend. 
 
-module State(State(..), initialGameState, resetGameState, gameOverState) where
+We extended the implementation by adding the following features: 
 
-import Playfield
-import Piece
-import System.Random
-import Data.List
+* Calculate and display the number of lines cleared
+* Calculate and display the current level, where higher levels means that the pieces fall quicker
+* Added a next piece feature that displays the piece that will fall next
+* Added a hold functionality, where users can hold a piece to use later on or swap the current piece with the piece on hold
+* Created a scoreboard that displays the top five scores when the game is over
+* Modified the code so that users can restart the game by pressing the space bar
 
-data State = State
-    { well :: Well
-    , time :: Float
-    , deltaTime :: Float
-    , secondsToNextMove :: Float
-    , piece :: Piece
-    , piecePos :: (Int, Int)
-    , randomSeed :: StdGen
-    , score :: Int
-    , accelerate :: Bool
-    , linesCleared :: Int
-    , nextPiece :: Piece
-    , gameOver :: Bool
-    , currentLevel :: Int
-    , holdPiece :: Maybe Piece
-    , scoreboard :: [Int]
-    } deriving (Show)
+# Compilation
+Install the Gloss library if not already installed. 
 
-initialGameState :: State
-initialGameState = State
-    { well = emptyWell
-    , time = 0
-    , deltaTime = 0
-    , secondsToNextMove = 0
-    , piece = tetrominoO
-    , piecePos = (0, 0)
-    , randomSeed = mkStdGen 0 -- found better way!
-    , score = 0
-    , accelerate = False
-    , linesCleared = 0
-    , nextPiece = tetrominoL
-    , gameOver = False
-    , currentLevel = 1
-    , holdPiece = Nothing
-    , scoreboard = [0,0,0,0,0]
-    }
+Use ghc --make Main to compile the game and then type ./Main to run the executable. 
 
--- Resets a game state, maintaining the random seed and scoreboard
-resetGameState :: State -> State
-resetGameState s = initialGameState {randomSeed = randomSeed s, scoreboard = scoreboard s}
+# How to Play
 
--- clears the state of the game and updates gameOver and scoreboard accordingly
-gameOverState :: [Int] -> State
-gameOverState topScores = initialGameState {gameOver = True, scoreboard = topScores}
-
+* Left and right arrow keys: move the falling piece left and right
+* Down arrow key: hold it to accelerate the speed of the falling piece
+* 'A' Key: rotates the piece clockwise
+* 'D' Key: rotates the piece counterclockwise
+* 'W' Key: holds a piece
+* Spacebar: restarts the game
